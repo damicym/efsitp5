@@ -1,10 +1,10 @@
 import MovieCard from "../components/MovieCard.jsx"
-function MovieList({ movies }) {
+function MovieList({ movies, redirectToDetails }) {
 
     return (
         <section>
-            {movies?.map(movie => (
-                <MovieCard key={movie.id} movie={movie} />
+            {movies?.map((movie, index) => (
+                <MovieCard key={`${movie.id}-${index}`} movie={movie} redirectToDetails={redirectToDetails}/>
             ))}
         </section>
     )
