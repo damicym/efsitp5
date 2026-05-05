@@ -1,10 +1,11 @@
 import MovieCard from "../components/MovieCard.jsx"
-function MovieList({ movies, redirectToDetails }) {
+import "../styles/MovieList.css";
+function MovieList({ movies, showDetail }) {
 
     return (
-        <section>
+        <section className="movie-list">
             {movies?.map((movie, index) => (
-                <MovieCard key={`${movie.id}-${index}`} movie={movie} redirectToDetails={redirectToDetails}/>
+                <MovieCard key={`${movie.id}-${index}`} movie={movie} showDetail={showDetail}/>
             ))}
         </section>
     )

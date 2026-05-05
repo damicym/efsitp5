@@ -1,13 +1,16 @@
-function MovieCard({ movie , redirectToDetails}) {
+import "../styles/MovieCard.css";
 
+function MovieCard({ movie , showDetail}) {
+    const mainInfo = [movie?.Year, movie?.Runtime, movie?.Genre, movie?.imdbRating ? `${movie.imdbRating} IMDb` : null].filter(Boolean).join(' · ')
 
     return (
-        <div onClick={() => redirectToDetails(movie)}>
-            <h2>{movie?.Title}</h2>
-            <img src={movie?.Poster} alt={movie?.Title}></img>
-            <h3>Tipo: {movie?.Type}</h3>
-            <h3>{movie?.Year}</h3>
-        </div>
+        <article className="movie-card" onClick={() => showDetail(movie)}>
+            <img className="poster" src={movie?.Poster} alt={movie?.Title} />
+            <div className="card-body">
+                <h3 className="title">{movie?.Title}</h3>
+                {mainInfo && <div className="meta">{mainInfo}</div>}
+            </div>
+        </article>
     )
 }
 

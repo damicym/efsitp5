@@ -1,0 +1,29 @@
+/* Styles for Details component */
+.details {
+	max-width: 980px;
+	margin: 1.25rem auto;
+	padding: 1rem 1.25rem;
+	background: #ffffff;
+	border-radius: 8px;
+	box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+.details .back-btn {
+	background: transparent;
+	border: none;
+	font-size: 1.25rem;
+	cursor: pointer;
+	margin-bottom: 0.5rem;
+}
+.details-header { margin-bottom:0.6rem }
+.details .title { margin:0; font-size:1.4rem }
+.details-meta { color:#666; font-size:0.95rem; margin-top:0.4rem }
+.details-content { display:flex; gap:1rem; align-items:flex-start }
+.details-poster { width:320px; max-width:35%; object-fit:cover; border-radius:6px }
+.details-info { flex:1 }
+.details .plot { line-height:1.5; margin:0 0 0.75rem 0 }
+.info-line { margin:0.25rem 0; color:#444 }
+
+@media (max-width:720px){
+	.details-content { flex-direction:column }
+	.details-poster { width:100%; max-width:100% }
+}

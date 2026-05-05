@@ -5,12 +5,12 @@ import MovieList from "./components/MovieList.jsx"
 import Loading from "./components/Loading.jsx"
 import Details from "./components/Details.jsx"
 
-
 function App() {
     const [loading, setLoading] = useState(false)
     const [searchResults, setSearchResults] = useState([])
     const [details, setDetails] = useState(false)
-    const [movie, setMovie] = useState(null)
+    const [selectedMovie, setSelectedMovie] = useState(null)
+    const [detailsLoading, setDetailsLoading] = useState(false)
     const apiKey = "4c7314b4"
     const handleSearch = (event) => {
         event.preventDefault()
@@ -18,30 +18,45 @@ function App() {
         setLoading(true)
         api.get(`/?apikey=${apiKey}&s=${query}`)
             .then(response => {
-                setSearchResults(response.data.Search)
+                setSearchResults(response.data)
                 setLoading(false)
+                setDetails(false)
             })
     }
 
-    function redirectToDetails(movie) {
+    function showDetail(movie) {
         setDetails(true)
-        setMovie(movie)
+        if (movie?.imdbID && selectedMovie?.imdbID && movie.imdbID === selectedMovie.imdbID) return
+        setDetailsLoading(true)
+        api.get(`/?apikey=${apiKey}&i=${movie.imdbID}`)
+        .then(response => {
+                setSelectedMovie(response.data)
+                setDetailsLoading(false)
+            })
     }
 
     return (
-        <>
-        <SearchBar handleSearch={handleSearch} />
+        <div className="site">
         { !details 
-            ? <> 
-                {loading
-                    ? <Loading />
-                    : <MovieList movies={searchResults} redirectToDetails={redirectToDetails} />
-                }
-            </>
-            
-            : <Details movie={movie} setDetails={setDetails}/>
+            ?   <> 
+                    <SearchBar handleSearch={handleSearch} />
+                    { loading
+                        ? <Loading />
+                        : searchResults?.Response === "True" 
+                            ? <MovieList movies={searchResults?.Search} showDetail={showDetail} />
+                            : searchResults?.Response === "False" 
+                                ? <h2>{!searchResults?.Error ?  "Error: No se encontraron resultados" : `Error en la API: ${searchResults.Error}`}</h2>
+                                : <div>
+                                    <h2>Bienvenido a Movie Search App</h2>
+                                    <p>Utiliza la barra de búsqueda para encontrar tus películas favoritas.</p>
+                                </div>
+                    }
+                </>
+            : detailsLoading
+                ? <Loading />
+                : <Details movie={selectedMovie} setDetails={setDetails}/>
         }
-        </>
+        </div>
     )
 }
 
